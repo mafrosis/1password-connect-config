@@ -1,0 +1,28 @@
+---
+version: "3.4"
+
+volumes:
+  op-data: {}
+
+services:
+  api:
+    image: 1password/connect-api:1.5.1
+    restart: unless-stopped
+    ports:
+      - 8081:8080
+    environment:
+      - OP_LOG_LEVEL=info
+    volumes:
+      - ./1password-credentials.json:/home/opuser/.op/1password-credentials.json
+      - op-data:/home/opuser/.op/data
+
+  sync:
+    image: 1password/connect-sync:1.5.1
+    restart: unless-stopped
+    ports:
+      - 8082:8080
+    environment:
+      - OP_LOG_LEVEL=info
+    volumes:
+      - ./1password-credentials.json:/home/opuser/.op/1password-credentials.json
+      - op-data:/home/opuser/.op/data

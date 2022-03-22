@@ -1,1 +1,40 @@
-# 1password-connect
+1password Connect
+==========
+
+A basic setup for 1password Connect following https://support.1password.com/secrets-automation/.
+
+
+Authentication
+----------
+
+Using the v2 version of the `op` CLI tool, create a "server" and a token, which belongs to the
+server. The "server" is any name which represents this particular Connect instance.
+
+```
+> op connect server create ringil
+Set up a Connect server.
+UUID: EZVRIQAW65C5BDGE5ZW3JZNTJU
+Credentials file: /media/mnt/dev/1password-connect/1password-credentials.json
+> op connect token create connect --server ringil
+eyJhbGciOiJFUzI1...snip
+```
+
+You can visit the [integrations page](https://my.1password.com/integrations/active) to view your
+new server and its token.
+
+
+Running Connect
+----------
+
+1Password Connect requires two containers:
+
+- `1password/connect-sync`: keeps secrets sync'd with 1Password.com
+- `1password/connect-api`: serves the Connect REST API
+
+The containers run with user `opuser` which has `uid=999`. Update the `1password-credentials.json`
+file to be readable inside the docker containers:
+
+```
+chgrp 999 1password-credentials.json
+chown g+r 1password-credentials.json
+```
