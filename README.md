@@ -38,3 +38,12 @@ file to be readable inside the docker containers:
 chgrp 999 1password-credentials.json
 chown g+r 1password-credentials.json
 ```
+
+
+Using as a Saltstack external pillar
+----------
+
+Users of Saltstack can leverage the
+[external pillar](https://docs.saltproject.io/en/latest/topics/development/modules/external_pillars.html)
+found at [`salt/ext_pillar/1password_connect.py`](./salt/ext_pillar/1password_connect.py), to feed
+all secrets from a given vault into the Salt pillar data.
