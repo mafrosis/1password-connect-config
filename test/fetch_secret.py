@@ -9,6 +9,8 @@ VAULT_ID='b6hmle4wvz2gl4mv6j3y4lcwza'
 
 def main():
     connect_token = os.environ.get('OP_CONNECT_TOKEN')
+    if not connect_token:
+        raise Exception('Must export OP_CONNECT_TOKEN')
 
     client = new_client(url=CONNECT_HOST, token=connect_token)
 
