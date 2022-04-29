@@ -20,7 +20,7 @@ def main():
         item = client.get_item(item.id, item.vault.id)
 
         title = item.title.lower().replace('.', '_').replace(' ', '_')
-        password = next(iter([x.value for x in item.fields if x.id == 'password']))
+        password = next(iter([x.value for x in item.fields if x.id in ('password', 'notesPlain')]))
 
         data[title] = password
 
