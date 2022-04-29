@@ -6,7 +6,7 @@ volumes:
 
 services:
   api:
-    image: 1password/connect-api:1.5.1
+    image: 1password/connect-api:1.5.2
     restart: unless-stopped
     ports:
       - 8081:8080
@@ -17,7 +17,7 @@ services:
       - op-data:/home/opuser/.op/data
 
   sync:
-    image: 1password/connect-sync:1.5.1
+    image: 1password/connect-sync:1.5.2
     restart: unless-stopped
     ports:
       - 8082:8080
