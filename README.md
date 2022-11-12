@@ -39,6 +39,16 @@ chgrp 999 1password-credentials.json
 chown g+r 1password-credentials.json
 ```
 
+Updating
+----------
+
+New docker tags can be checked at https://hub.docker.com/r/1password/connect-api/tags.
+
+```
+docker compose pull
+docker compose up -d
+```
+
 
 Using as a Saltstack external pillar
 ----------
