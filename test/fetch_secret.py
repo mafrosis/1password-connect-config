@@ -4,7 +4,7 @@ import os
 
 from onepasswordconnectsdk.client import new_client
 
-CONNECT_HOST='http://ringil:8081'
+CONNECT_HOST='http://locke:8081'
 VAULT_ID='b6hmle4wvz2gl4mv6j3y4lcwza'
 
 def main():
