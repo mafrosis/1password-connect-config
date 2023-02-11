@@ -1,7 +1,7 @@
 1Password Connect
 ==========
 
-A basic setup for 1password Connect following https://support.1password.com/secrets-automation/.
+A basic setup for 1password Connect following https://developer.1password.com/docs/connect/.
 
 
 Authentication
@@ -15,7 +15,14 @@ server. The "server" is any name which represents this particular Connect instan
 Set up a Connect server.
 UUID: EZVRIQAW65C5BDGE5ZW3JZNTJU
 Credentials file: /media/mnt/dev/1password-connect/1password-credentials.json
-> op connect token create connect --server ringil
+```
+
+The `1password-credentials.json` file contains the credentials for the Connect server. To use it in
+the a `salt-master` it needs to be included in `config/ext_pillar.conf`.
+
+Now create a token which a client application can use to call Connect:
+```
+> op connect token create connect --server ringil --vault b6hmle4xxxxxxxxxxxxy4lcwza
 eyJhbGciOiJFUzI1...snip
 ```
 
@@ -36,7 +43,7 @@ file to be readable inside the docker containers:
 
 ```
 chgrp 999 1password-credentials.json
-chown g+r 1password-credentials.json
+chmod g+r 1password-credentials.json
 ```
 
 Updating
@@ -72,17 +79,17 @@ default_include: /home/salt/data/config/*.conf
 extension_modules: /var/cache/salt/master/extmods
 ```
 
-The bundled `docker-compose.yml` includes the following:
-```
-- ./config:/home/salt/data/config
-- ./1password-connect/salt:/var/cache/salt/master/extmods
-```
-
-So, add following into `config/ext_pillar.conf`:
+Add following into `config/ext_pillar.conf`:
 ```
 ext_pillar:
   - 1password:
       connect_host: http://example.com:8081
       connect_token: eyJhbGc .. snip .. 2YCkucw
       vault_id: b6hmle4xxxxxxxxxxxxy4lcwza
+```
+
+The bundled `docker-compose.yml` includes the following:
+```
+- ./config:/home/salt/data/config
+- ./1password-connect/salt:/var/cache/salt/master/extmods
 ```
