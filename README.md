@@ -17,17 +17,32 @@ UUID: EZVRIQAW65C5BDGE5ZW3JZNTJU
 Credentials file: /media/mnt/dev/1password-connect/1password-credentials.json
 ```
 
-The `1password-credentials.json` file contains the credentials for the Connect server. To use it in
-the a `salt-master` it needs to be included in `config/ext_pillar.conf`.
+The `1password-credentials.json` file contains the credentials the connect services `api` & `sync`
+use to authenticate with the 1password servers upstream.
 
-Now create a token which a client application can use to call Connect:
+Grant this connect server access to your vault:
 ```
-> op connect token create connect --server ringil --vault b6hmle4xxxxxxxxxxxxy4lcwza
+> op connect vault grant --server ringil --vault Homelab
+Connect server ringil (EZVRIQAW65C5BDGE5ZW3JZNTJU) has been successfully granted access to vault Homelab (b6hmle4xxxxxxxxxxxxx4lcwza).
+```
+
+The following command creates a token which a client application can use to auth to the `api`
+service:
+```
+> op connect token create "$(hostname)-connect" --server ringil --vault Homelab
 eyJhbGciOiJFUzI1...snip
 ```
 
 You can visit the [integrations page](https://my.1password.com/integrations/active) to view your
 new server and its token.
+
+The containers run with user `opuser` which has `uid=999`. Update the `1password-credentials.json`
+file to be readable inside the docker containers:
+
+```
+chgrp 999 1password-credentials.json
+chmod g+r 1password-credentials.json
+```
 
 
 Running Connect
@@ -38,13 +53,6 @@ Running Connect
 - `1password/connect-sync`: keeps secrets sync'd with 1Password.com
 - `1password/connect-api`: serves the Connect REST API
 
-The containers run with user `opuser` which has `uid=999`. Update the `1password-credentials.json`
-file to be readable inside the docker containers:
-
-```
-chgrp 999 1password-credentials.json
-chmod g+r 1password-credentials.json
-```
 
 Updating
 ----------
